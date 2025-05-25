@@ -2,19 +2,19 @@ name: Auto Update dan Retrain Harian
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # Jam 08:00 WIB
-  workflow_dispatch:     # Bisa klik manual juga dari GitHub
+    - cron: '0 8 * * *'  # Jalankan jam 08:00 WIB setiap hari
+  workflow_dispatch:    # Bisa dijalankan manual dari GitHub UI juga
 
 jobs:
   update-retrain:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repository
+      - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Fix Git safe directory issue
-        run: git config --global --add safe.directory /github/workspace
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Setup Python 3.10
         uses: actions/setup-python@v2
@@ -30,21 +30,14 @@ jobs:
         run: |
           python daily_update.py
 
-      - name: Setup Git user
+      - name: Commit dan push perubahan manual
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config --global user.name "Fadhlrahman"
-          git config --global user.email "fitraarsil19@gmail.com"
-
-      - name: Commit changes
-        run: |
+          git config --global --add safe.directory /github/workspace
+          git config --local user.email "fitraarsil19@gmail.com"
+          git config --local user.name "Fadhlrahman"
           git add .
-          git commit -m "Auto update dan retrain - $(date +'%Y-%m-%d')"
-        continue-on-error: true
-
-      - name: Push Back
-        uses: ad-m/github-push-action@v0.5.0
-        with:
-          force: true
-          directory: '.'
-          branch: main
-          github_token: ${{ secrets.GH_TOKEN }}
+          git commit -m "Auto update dan retrain - $(date +'%Y-%m-%d')" || echo "No changes to commit"
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git
+          git push origin main
