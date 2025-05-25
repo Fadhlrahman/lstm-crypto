@@ -39,5 +39,5 @@ jobs:
           git config --local user.name "Fadhlrahman"
           git add .
           git commit -m "Auto update dan retrain - $(date +'%Y-%m-%d')" || echo "No changes to commit"
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git
+          git remote set-url origin https://x-access-token:${secrets.GH_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git
           git push origin main
