@@ -1,0 +1,37 @@
+name: Auto Update dan Retrain Harian
+
+on:
+  schedule:
+    - cron: '0 1 * * *'  # Jam 08:00 WIB
+  workflow_dispatch:     # Bisa klik manual juga dari GitHub
+
+jobs:
+  update-retrain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Jalankan update_data.py dan train_lstm.py
+        run: |
+          python daily_update.py
+          python train_lstm.py
+
+      - name: Commit perubahan data & model
+        run: |
+          git config --global user.name "Fadhlrahman"
+          git config --global user.email "fitraarsil19@gmail.com"
+          git add data/ models/
+          git commit -m "Auto update dan retrain - $(date '+%Y-%m-%d')" || echo "Tidak ada perubahan"
+          git push
