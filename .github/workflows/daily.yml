@@ -43,5 +43,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git HEAD:main
+          git push https://x-access-token:${GH_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git HEAD:main
         
