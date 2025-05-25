@@ -29,8 +29,8 @@ jobs:
 
       - name: Setup Git user
         run: |
-          git config --global user.name "Fadhlrahman"
-          git config --global user.email "fitraarsil19@gmail.com"
+          git config --local user.name "Fadhlrahman"
+          git config --local user.email "fitraarsil19@gmail.com"
         
       - name: Commit changes
         run: |
