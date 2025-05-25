@@ -13,6 +13,9 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v2
 
+      - name: Fix Git safe directory issue
+        run: git config --global --add safe.directory /github/workspace
+
       - name: Setup Python 3.10
         uses: actions/setup-python@v2
         with:
@@ -29,15 +32,15 @@ jobs:
 
       - name: Setup Git user
         run: |
-          git config --local user.name "Fadhlrahman"
-          git config --local user.email "fitraarsil19@gmail.com"
-        
+          git config --global user.name "Fadhlrahman"
+          git config --global user.email "fitraarsil19@gmail.com"
+
       - name: Commit changes
         run: |
           git add .
           git commit -m "Auto update dan retrain - $(date +'%Y-%m-%d')"
         continue-on-error: true
-        
+
       - name: Push Back
         uses: ad-m/github-push-action@v0.5.0
         with:
@@ -45,4 +48,3 @@ jobs:
           directory: '.'
           branch: main
           github_token: ${{ secrets.GH_TOKEN }}
-        
