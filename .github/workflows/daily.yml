@@ -28,10 +28,20 @@ jobs:
           python daily_update.py
           python train_lstm.py
 
-      - name: Commit perubahan data & model
+      - name: Setup Git user
         run: |
           git config --global user.name "Fadhlrahman"
-          git config --global user.email "fitraarsil19@gmail.com"
-          git add data/ models/
-          git commit -m "Auto update dan retrain - $(date '+%Y-%m-%d')" || echo "Tidak ada perubahan"
-          git push
+          git config --global user.email "your-email@example.com"
+        
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "Auto update dan retrain - $(date +'%Y-%m-%d')"
+        continue-on-error: true
+        
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git HEAD:main
+        
