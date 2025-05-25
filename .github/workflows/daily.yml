@@ -2,7 +2,7 @@ name: Auto Update dan Retrain Harian
 
 on:
   schedule:
-    - cron: '0 1 * * *'  # Jam 08:00 WIB
+    - cron: '0 8 * * *'  # Jam 08:00 WIB
   workflow_dispatch:     # Bisa klik manual juga dari GitHub
 
 jobs:
@@ -26,7 +26,6 @@ jobs:
       - name: Jalankan update_data.py dan train_lstm.py
         run: |
           python daily_update.py
-          python train_lstm.py
 
       - name: Setup Git user
         run: |
@@ -44,5 +43,6 @@ jobs:
         with:
           force: true
           directory: '.'
-          github_token: ${{ secrets.GH_TOKEN }}
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
         
