@@ -39,9 +39,10 @@ jobs:
           git commit -m "Auto update dan retrain - $(date +'%Y-%m-%d')"
         continue-on-error: true
         
-      - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-        run: |
-          git push https://x-access-token:${GH_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git HEAD:main
+      - name: Push Back
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          force: true
+          directory: '.'
+          github_token: ${{ secrets.GH_TOKEN }}
         
