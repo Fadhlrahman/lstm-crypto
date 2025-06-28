@@ -1,43 +1,43 @@
-name: Auto Update dan Retrain Harian
+# name: Auto Update dan Retrain Harian
 
-on:
-  schedule:
-    - cron: '0 8 * * *'  # Jalankan jam 08:00 WIB setiap hari
-  workflow_dispatch:    # Bisa dijalankan manual dari GitHub UI juga
+# on:
+#   schedule:
+#     - cron: '0 8 * * *'  # Jalankan jam 08:00 WIB setiap hari
+#   workflow_dispatch:    # Bisa dijalankan manual dari GitHub UI juga
 
-jobs:
-  update-retrain:
-    runs-on: ubuntu-latest
+# jobs:
+#   update-retrain:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          fetch-depth: 0
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+#         with:
+#           persist-credentials: false
+#           fetch-depth: 0
 
-      - name: Setup Python 3.10
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
+#       - name: Setup Python 3.10
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
+#       - name: Install dependencies
+#         run: |
+#           pip install --upgrade pip
+#           pip install -r requirements.txt
 
-      - name: Jalankan update_data.py dan train_lstm.py
-        run: |
-          python daily_update.py
+#       - name: Jalankan update_data.py dan train_lstm.py
+#         run: |
+#           python daily_update.py
 
-      - name: Commit dan push perubahan manual
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          git config --global --add safe.directory /github/workspace
-          git config --local user.email "fitraarsil19@gmail.com"
-          git config --local user.name "Fadhlrahman"
-          git add .
-          git commit -m "Auto update dan retrain - $(date +'%Y-%m-%d')" || echo "No changes to commit"
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git
-          git push origin main
+#       - name: Commit dan push perubahan manual
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#         run: |
+#           git config --global --add safe.directory /github/workspace
+#           git config --local user.email "fitraarsil19@gmail.com"
+#           git config --local user.name "Fadhlrahman"
+#           git add .
+#           git commit -m "Auto update dan retrain - $(date +'%Y-%m-%d')" || echo "No changes to commit"
+#           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Fadhlrahman/lstm-crypto.git
+#           git push origin main
